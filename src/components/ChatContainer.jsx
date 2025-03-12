@@ -2,9 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
-import { FaRobot, FaHistory, FaSpinner } from "react-icons/fa";
+import { FaRobot, FaSpinner } from "react-icons/fa";
 import { useChat, useGetChatHistory } from "../Services/Query/AllQuery";
-import useStreamingMutation from "../hooks/useStreamingMutation";
 
 const Container = styled.div`
   display: flex;
@@ -131,8 +130,6 @@ const LoadingContainer = styled(WelcomeMessage)`
 `;
 
 export default function ChatContainer({ pdfLoaded, onCitationClick, pdfFile }) {
-  const { mutation, streamingData, resetStreamingData } =
-    useStreamingMutation();
   const { isPending: isMessagesPending, mutate: sendMessage } = useChat();
   const {
     isPending: isPendingChatHistory,
@@ -176,8 +173,6 @@ export default function ChatContainer({ pdfLoaded, onCitationClick, pdfFile }) {
       documentId: pdfFile.id,
       query: text,
     };
-    // resetStreamingData();
-    // mutation.mutate(finalData);
 
     sendMessage(
       {
@@ -223,10 +218,6 @@ export default function ChatContainer({ pdfLoaded, onCitationClick, pdfFile }) {
       {pdfLoaded ? (
         <>
           <MessagesContainer>
-            {/* {streamingData.map((chunk, index) => (
-              <div key={index}>{JSON.stringify(chunk)}</div>
-            ))} */}
-
             {isPendingChatHistory ? (
               <LoadingContainer>
                 <WelcomeIcon>

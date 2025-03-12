@@ -45,23 +45,6 @@ export async function chat(token, data) {
   return out;
 }
 
-export async function chatstream(token, data) {
-  const res = await fetch(`${BASE_URL}/chat/chatstream`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(data),
-  });
-  console.log("chatstream", res);
-  const out = await res.json();
-  if (!res.ok) {
-    throw new Error(out.error || "Chat failed");
-  }
-  return out;
-}
-
 export async function getChatHistory(token, documentId) {
   if (!documentId) {
     throw new Error("Document ID is required");

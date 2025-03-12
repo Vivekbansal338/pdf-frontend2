@@ -2,7 +2,6 @@ import {
   getToken2,
   getChatHistory,
   chat,
-  chatstream,
   verifyToken,
   uploadDocument,
   getUserDocuments,
@@ -42,14 +41,6 @@ export const useChat = () => {
   const token = useSelector((state) => state.auth.token);
   const { isPending, error, mutate, reset, isError } = useMutation({
     mutationFn: ({ data }) => chat(token, data),
-  });
-  return { isPending, error, mutate, reset, isError };
-};
-
-export const useChatStream = () => {
-  const token = useSelector((state) => state.auth.token);
-  const { isPending, error, mutate, reset, isError } = useMutation({
-    mutationFn: ({ data }) => chatstream(token, data),
   });
   return { isPending, error, mutate, reset, isError };
 };

@@ -33,14 +33,16 @@ function isTokenExpired(token) {
 const Protect = () => {
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
-  const { isPending, data } = useLogin2();
+  const { refetch } = useLogin2();
   useEffect(() => {
     async function checkAuth() {
       try {
         const userData = await verifyToken(token);
+        console.log("valid", userData.valid);
         // {valid: true, userId: '6d2e2f2f-4171-467f-ad2e-8601dbc81620'}
         if (!userData.valid) {
           dispatch(logoutSuccess());
+          refetch();
         }
       } catch (error) {}
     }
