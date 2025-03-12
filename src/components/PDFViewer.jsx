@@ -18,6 +18,7 @@ const ViewerContainer = styled.div`
   background: ${({ theme }) => theme.background};
   position: relative;
   overflow: hidden;
+  margin-top: 50px;
 `;
 
 const PDFContainer = styled.div`

@@ -266,6 +266,27 @@ const CloseButton = styled.button`
     color: ${({ theme }) => theme.primary};
   }
 `;
+const StyledButton = styled.button`
+  padding: 8px 16px;
+  background: linear-gradient(
+    45deg,
+    ${({ theme }) => `${theme.primary}33`},
+    ${({ theme }) => `${theme.secondary}33`}
+  );
+  color: ${({ theme }) => theme.primary};
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
 
 export default function PreviousPDFsSection({
   onPDFUpload,
@@ -342,13 +363,17 @@ export default function PreviousPDFsSection({
 
   return (
     <PreviousPDFsSectionCon>
-      <HeaderContainer increase={increase}>
+      {/* <HeaderContainer increase={increase}>
         <PDFHistoryIcon
           onClick={openModal}
           increase={increase}
           title="View previous PDFs"
         />
-      </HeaderContainer>
+      </HeaderContainer> */}
+
+      <StyledButton onClick={openModal}>
+        <FaHistory /> View Previous PDFs
+      </StyledButton>
 
       {isModalOpen && (
         <ModalOverlay onClick={closeModal}>

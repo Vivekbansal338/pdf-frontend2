@@ -79,21 +79,12 @@ function HomePage2() {
         />
 
         <div
-          style={
-            pdfFile
-              ? {
-                  position: "fixed",
-                  bottom: "5px",
-                  right: "10px",
-                  zIndex: 1000,
-                }
-              : {
-                  position: "fixed",
-                  bottom: "15px",
-                  right: "10px",
-                  zIndex: 1000,
-                }
-          }
+          style={{
+            position: "fixed",
+            top: "15px",
+            right: "150px",
+            zIndex: 1000,
+          }}
         >
           <PreviousPDFsSection
             onPDFUpload={handlePDFUpload}
