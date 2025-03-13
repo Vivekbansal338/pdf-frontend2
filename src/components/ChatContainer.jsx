@@ -11,6 +11,7 @@ const Container = styled.div`
   height: 100%;
   width: 100%;
   background: ${({ theme }) => theme.background};
+  padding-top: 55px;
 `;
 
 const MessagesContainer = styled.div`
