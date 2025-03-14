@@ -1,6 +1,7 @@
 import {
   getToken2,
   getChatHistory,
+  getChatImage,
   chat,
   verifyToken,
   uploadDocument,
@@ -56,22 +57,36 @@ export const useGetChatHistory = (documentId) => {
         formattedMessages.push({
           text: item.query,
           timestamp: new Date(item.timestamp),
-          isUser: true,
+          isuser: true,
         });
         formattedMessages.push({
           text: item.answer,
           timestamp: new Date(item.timestamp),
-          isUser: false,
+          isuser: false,
           citations:
             item.citations?.map((citation) => ({
               id: citation.id,
               page: citation.page,
               text: citation.text,
             })) || [],
+          citationImages:
+            item.citations?.flatMap((citation) =>
+              citation.images.map((image) => image.id)
+            ) || [],
         });
       });
       return formattedMessages;
     },
+  });
+  return { isPending, error, data, refetch };
+};
+
+export const useGetChatImage = (imageId, enabled = true) => {
+  const token = useSelector((state) => state.auth.token);
+  const { isPending, error, data, refetch } = useQuery({
+    queryKey: ["getChatImage", imageId],
+    queryFn: () => getChatImage(token, imageId),
+    enabled: !!imageId && !!enabled,
   });
   return { isPending, error, data, refetch };
 };

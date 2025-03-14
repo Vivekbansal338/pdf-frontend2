@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { FaUser, FaRobot, FaQuoteRight, FaBookOpen } from "react-icons/fa";
+import {
+  FaUser,
+  FaRobot,
+  FaQuoteRight,
+  FaBookOpen,
+  FaImage,
+} from "react-icons/fa";
+import ImageCitation from "./ImageCitation";
 
 const MessageContainer = styled(motion.div)`
   display: flex;
@@ -13,8 +20,8 @@ const Avatar = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: ${({ theme, isUser }) =>
-    isUser
+  background: ${({ theme, isuser }) =>
+    isuser
       ? `linear-gradient(45deg, ${theme.primary}, ${theme.secondary})`
       : theme.inputBg};
   display: flex;
@@ -22,27 +29,27 @@ const Avatar = styled.div`
   justify-content: center;
   margin-right: 1rem;
   flex-shrink: 0;
-  color: ${({ theme, isUser }) => (isUser ? theme.buttonText : theme.primary)};
+  color: ${({ theme, isuser }) => (isuser ? theme.buttonText : theme.primary)};
 `;
 
 const MessageContent = styled.div`
   flex: 1;
-  background: ${({ theme, isUser }) =>
-    isUser
+  background: ${({ theme, isuser }) =>
+    isuser
       ? `linear-gradient(45deg, ${theme.primary}11, ${theme.secondary}11)`
       : theme.inputBg};
   border-radius: 12px;
   padding: 1rem;
   border: 1px solid
-    ${({ theme, isUser }) =>
-      isUser ? theme.primary + "22" : theme.inputBorder};
+    ${({ theme, isuser }) =>
+      isuser ? theme.primary + "22" : theme.inputBorder};
 `;
 
 const Sender = styled.div`
   font-weight: 600;
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
-  color: ${({ theme, isUser }) => (isUser ? theme.primary : theme.text)};
+  color: ${({ theme, isuser }) => (isuser ? theme.primary : theme.text)};
 `;
 
 const Text = styled.div`
@@ -142,6 +149,27 @@ const CitationPage = styled.div`
   color: ${({ theme }) => theme.primary};
 `;
 
+const ImageCitationsContainer = styled.div`
+  margin-top: 1rem;
+  border-top: 1px solid ${({ theme }) => theme.inputBorder + "66"};
+  padding-top: 0.75rem;
+`;
+
+const ImageCitationHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: ${({ theme }) => theme.iconColor};
+  margin-bottom: 0.75rem;
+`;
+
+const ImageCitationsWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+`;
+
 const CitationButton = ({ citation, onClick }) => {
   return (
     <Citation onClick={() => onClick(citation.page)}>
@@ -157,10 +185,11 @@ const CitationButton = ({ citation, onClick }) => {
 
 export default function ChatMessage({
   message,
-  isUser,
+  isuser,
   onCitationClick,
   animate = true,
 }) {
+  console.log("Message:", message);
   const messageAnimation = animate
     ? {
         initial: { opacity: 0, y: 20 },
@@ -170,22 +199,27 @@ export default function ChatMessage({
     : {};
 
   const hasCitations =
-    !isUser && message.citations && message.citations.length > 0;
+    !isuser && message.citations && message.citations.length > 0;
+  const hasImageCitations =
+    !isuser && message.citationImages && message.citationImages.length > 0;
 
   return (
     <MessageContainer {...messageAnimation}>
-      <Avatar isUser={isUser}>
-        {isUser ? <FaUser size={14} /> : <FaRobot size={14} />}
+      <Avatar isuser={isuser}>
+        {isuser ? <FaUser size={14} /> : <FaRobot size={14} />}
       </Avatar>
-      <MessageContent isUser={isUser}>
-        <Sender isUser={isUser}>{isUser ? "You" : "Assistant"}</Sender>
+      <MessageContent isuser={isuser}>
+        <Sender isuser={isuser}>{isuser ? "You" : "Assistant"}</Sender>
         <Text>{message.text}</Text>
 
-        {hasCitations && (
+        {(hasCitations || hasImageCitations) && (
           <CitationsContainer>
             <CitationHeader>
               <FaQuoteRight size={12} />
-              <span>Sources ({message.citations.length})</span>
+              <span>
+                Sources (
+                {message.citations.length + message.citationImages.length})
+              </span>
             </CitationHeader>
             <CitationsWrapper>
               {message.citations.map((citation, index) => (
@@ -193,6 +227,13 @@ export default function ChatMessage({
                   key={index}
                   citation={citation}
                   onClick={onCitationClick}
+                />
+              ))}
+              {message.citationImages.map((imageId, index) => (
+                <ImageCitation
+                  key={imageId}
+                  imageId={imageId}
+                  buttonLabel={`Image ${index + 1}`}
                 />
               ))}
             </CitationsWrapper>

@@ -148,6 +148,7 @@ export default function ChatContainer({ pdfLoaded, onCitationClick, pdfFile }) {
       !isMessagesPending &&
       messages.length === 0
     ) {
+      console.log("Chat history data:", data);
       setMessages(data);
     }
   }, [data, isPendingChatHistory, isMessagesPending]);
@@ -166,7 +167,7 @@ export default function ChatContainer({ pdfLoaded, onCitationClick, pdfFile }) {
     const userMessage = {
       text,
       timestamp: new Date(),
-      isUser: true,
+      isuser: true,
     };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     setIsTyping(true);
@@ -190,10 +191,16 @@ export default function ChatContainer({ pdfLoaded, onCitationClick, pdfFile }) {
                 id: citation.id,
               })) || [],
             timestamp: new Date(),
-            isUser: false,
+            isuser: false,
+            citationImages:
+              data.citations?.flatMap((citation) =>
+                citation.images.map((image) => image.id)
+              ) || [],
           };
 
           setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+          console.log("Messages:", messages);
+
           setIsTyping(false);
         },
         onError: (error) => {
@@ -246,7 +253,7 @@ export default function ChatContainer({ pdfLoaded, onCitationClick, pdfFile }) {
                 <ChatMessage
                   key={index}
                   message={message}
-                  isUser={message.isUser}
+                  isuser={Boolean(message.isuser)}
                   onCitationClick={onCitationClick}
                 />
               ))

@@ -64,6 +64,24 @@ export async function getChatHistory(token, documentId) {
   return data;
 }
 
+export async function getChatImage(token, imageId) {
+  if (!imageId) {
+    throw new Error("Image ID is required");
+  }
+  const res = await fetch(`${BASE_URL}/chat/image/${imageId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.error || "Fetching chat image failed");
+  }
+  return data;
+}
+
 export async function uploadDocument(token, data) {
   const formData = new FormData();
   formData.append("file", data.file);
